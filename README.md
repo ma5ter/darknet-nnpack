@@ -65,3 +65,9 @@ yolov3-tiny-voc.cfg | NNPACK=0 | | 14.0 |
 yolov3-tiny-prn-voc.cfg | NNPACK=1 | 65.2 | 0.77 | [yolov3-tiny-prn-voc.weights](https://drive.google.com/open?id=1NljMzqeFxu0Kr04iftjc-zSL0Nxkns1n)
 yolov3-tiny-prn-voc.cfg | NNPACK=0 | | 8.9 | 
 Gaussian_yolov3-tiny-voc.cfg | NNPACK=1 | 65.7 | 1.0 | [Gaussian_yolov3-tiny-voc.weights](https://drive.google.com/open?id=1qHdCsYsyvPX37pNoYpoug-FUUtu_1HxM)
+
+## Raspberry Pi OS Image
+Download OS image from [here](https://drive.google.com/open?id=1D9XRKn8eYiGokf_uN1Pwkqtnt_ae5SAQ)
+```
+sudo dd bs=4M if=darknet-nnpack.img of=/dev/sdX conv=fsyn
+```
