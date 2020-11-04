@@ -50,10 +50,12 @@ struct bbox_t_container {
 #include <iostream>
 #include <cmath>
 
-#ifdef OPENCV
+#if defined(OPENCV) || defined(OPENCV_DETECT)
 #include <opencv2/opencv.hpp>            // C++
-#include <opencv2/highgui/highgui_c.h>   // C
 #include <opencv2/imgproc/imgproc_c.h>   // C
+#endif
+#ifdef OPENCV
+#include <opencv2/highgui/highgui_c.h>   // C
 #endif
 
 extern "C" LIB_API int init(const char *configurationFilename, const char *weightsFilename, int gpu);
@@ -78,6 +80,10 @@ public:
 
     LIB_API Detector(std::string cfg_filename, std::string weight_filename, int gpu_id = 0);
     LIB_API ~Detector();
+
+	#ifdef NNPACK
+	LIB_API void set_threadpool(pthreadpool_t pool);
+	#endif
 
     LIB_API std::vector<bbox_t> detect(std::string image_filename, float thresh = 0.2, bool use_mean = false);
     LIB_API std::vector<bbox_t> detect(image_t img, float thresh = 0.2, bool use_mean = false);
@@ -105,7 +111,7 @@ public:
         return detection_boxes;
     }
 
-#ifdef OPENCV
+#if defined(OPENCV) || defined(OPENCV_DETECT)
     std::vector<bbox_t> detect(cv::Mat mat, float thresh = 0.2, bool use_mean = false)
     {
         if(mat.data == NULL)

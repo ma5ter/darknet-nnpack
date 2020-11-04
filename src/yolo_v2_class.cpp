@@ -42,7 +42,7 @@ int detect_image(const char *filename, bbox_t_container &container)
 }
 
 int detect_mat(const uint8_t* data, const size_t data_length, bbox_t_container &container) {
-#ifdef OPENCV
+#if defined(OPENCV) || defined (OPENCV_DETECT)
     std::vector<char> vdata(data, data + data_length);
     cv::Mat image = imdecode(cv::Mat(vdata), 1);
 
@@ -200,6 +200,13 @@ LIB_API Detector::~Detector()
     cudaSetDevice(old_gpu_index);
 #endif
 }
+
+#ifdef NNPACK
+LIB_API void Detector::set_threadpool(pthreadpool_t pool) {
+    detector_gpu_t &detector_gpu = *static_cast<detector_gpu_t *>(detector_gpu_ptr.get());
+    detector_gpu.net.threadpool = pool;
+}
+#endif
 
 LIB_API int Detector::get_net_width() const {
     detector_gpu_t &detector_gpu = *static_cast<detector_gpu_t *>(detector_gpu_ptr.get());
